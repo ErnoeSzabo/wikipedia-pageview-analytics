@@ -29,8 +29,8 @@ The pipeline runs automatically every six hours and processes a rolling twelve-h
 ```mermaid
 flowchart TD
     A[Wikimedia Hourly Pageview Files] --> B[Bronze Layer<br/>Raw pageview records]
-    B --> C[Silver Layer<br/>Cleaned and categorized data]
-    C --> D[Gold Layer<br/>Dashboard-ready aggregations]
+    B --> C[Silver Layer<br/>Cleaned and standardized data]
+    C --> D[Gold Layer<br/>Topic classification and aggregations]
     D --> E[Databricks SQL Dashboard]
 
     classDef source fill:#E8F0FE,stroke:#4A90E2,stroke-width:1.5px,color:#000;
@@ -65,55 +65,62 @@ The project follows a medallion architecture with three processing layers.
 
 ### Bronze Layer
 
-The Bronze layer downloads hourly Wikimedia pageview files and stores the relevant raw records in Delta tables.
+The Bronze layer downloads the latest twelve completed Wikimedia hourly pageview files after a three-hour safety delay.
 
-The ingestion process uses a rolling twelve-hour window so that the dashboard always contains recent pageview activity.
+It retains English Wikipedia desktop and mobile records, adds source metadata, and stores the resulting raw records in the Delta table:
+
+`workspace.wiki_bronze.pageviews_raw`
+
+The table is refreshed as a rolling twelve-hour snapshot during each pipeline run.
 
 ### Silver Layer
 
 The Silver layer cleans and standardizes the raw records.
 
-Pages are assigned to predefined topics, unnecessary records are removed, and fields such as project, page title, access type, pageviews, and timestamp are prepared for analysis.
+It creates timestamp and access-method fields, improves page-title readability, removes invalid records, and excludes technical Wikimedia namespaces and unsuitable pages.
+
+The cleaned records are stored in:
+
+`workspace.wiki_silver.pageviews_clean`
+
+Topic classification is intentionally handled later in the Gold layer.
 
 ### Gold Layer
 
-The Gold layer creates aggregated datasets optimized for dashboard queries.
+The Gold layer applies configurable rule-based topic classification and creates datasets optimized for dashboard queries.
 
-The resulting tables support:
+To improve performance on Databricks Serverless compute, topic rules are first matched against distinct page titles. The resulting matches are materialized in the helper table:
+
+`workspace.wiki_gold.topic_matches`
+
+This prevents the full regular-expression matching process from being repeated for every hourly record and downstream aggregation.
+
+The Gold layer creates datasets supporting:
 
 * Topic rankings
 * Hourly pageview trends
 * Mobile and desktop comparisons
 * Top pages by topic
+* Distinct matched-article counts
 * Current data-window monitoring
 
 ## Automation
 
-The pipeline is orchestrated through a Databricks Job containing three dependent tasks:
-
-1. Bronze ingestion
-2. Silver transformation
-3. Gold aggregation
-
-The job runs automatically every six hours.
-
-Each processing step starts only after the previous task has completed successfully.
-
-### Automated Databricks Workflow
-
-The pipeline is orchestrated as a three-task Databricks Workflow:
+The pipeline is orchestrated as a three-task Databricks Workflow running on Serverless compute:
 
 1. **Bronze ingestion** downloads and structures the latest Wikimedia pageview files.
 2. **Silver cleaning** standardizes the records and removes technical or unsuitable pages.
 3. **Gold topic analytics** applies configurable topic rules and creates dashboard-ready Delta tables.
 
-Each task starts only after the previous task has completed successfully. The workflow runs on Databricks Serverless compute every six hours.
+Each task starts only after the previous task has completed successfully. The workflow runs every six hours, at fifteen minutes past the scheduled hour.
 
 ![Databricks Bronze Silver Gold workflow](screenshots/pipeline_tasks.png)
 
 ### Scheduled Pipeline Runs
 
-The automated workflow refreshes the rolling twelve-hour dataset every six hours. Recent optimized runs complete in approximately eight to nine minutes.
+The automated workflow refreshes the rolling twelve-hour dataset every six hours.
+
+After optimizing topic classification by matching distinct page titles only once and materializing the results as a Delta helper table, recent pipeline runs complete in approximately eight to nine minutes.
 
 ![Databricks pipeline run history](screenshots/pipeline.png)
 
@@ -123,6 +130,15 @@ The automated workflow refreshes the rolling twelve-hour dataset every six hours
 The Databricks SQL dashboard provides a continuously updated view of public attention across six selected global topics.
 
 It includes topic rankings, desktop and mobile comparisons, hourly attention trends, and an interactive selector for exploring the most viewed Wikipedia pages within each topic.
+
+The current topic set includes:
+
+- 2026 FIFA World Cup
+- Artificial Intelligence
+- Ukraine
+- Space & Astronomy
+- Climate Change
+- Bitcoin / Crypto
 
 ### Topic Overview
 
@@ -166,14 +182,17 @@ The raw pageview files are not stored in this repository. They are downloaded au
 
 ## Key Engineering Features
 
-* Automated ingestion of hourly data
-* Rolling twelve-hour processing window
-* Bronze, Silver, and Gold Lakehouse architecture
-* Delta Lake storage
-* Multi-task Databricks Workflow
-* Scheduled execution every six hours
-* Dashboard-ready Gold tables
-* Interactive Databricks SQL analytics
+- Automated ingestion of hourly Wikimedia data
+- Rolling twelve-hour processing window with a three-hour availability delay
+- Bronze, Silver, and Gold Lakehouse architecture
+- PySpark transformations and Delta Lake storage
+- Configurable rule-based topic classification
+- Materialized title-to-topic matching for faster Serverless execution
+- Full UTC timestamps across date boundaries
+- Three-task Databricks Workflow with dependent tasks
+- Scheduled execution every six hours
+- Interactive Databricks SQL dashboard
+- Topic-specific parameter control for the Top Pages visualization
 
 ## Future Improvements
 
