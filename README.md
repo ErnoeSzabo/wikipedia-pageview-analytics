@@ -58,6 +58,8 @@ flowchart TD
 * Wikimedia Pageview Data
 * Git
 * GitHub
+* Regular Expressions
+* Serverless
 
 ## Data Pipeline
 
