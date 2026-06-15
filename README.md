@@ -48,9 +48,6 @@ flowchart TD
 
 ## Technology Stack
 
-
-## Technology Stack
-
 * Databricks
 * Apache Spark
 * PySpark
