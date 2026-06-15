@@ -26,24 +26,24 @@ The pipeline runs automatically every six hours and processes a rolling twelve-h
 
 ## Architecture
 
-```text
-Wikimedia Hourly Pageview Files
-              |
-              v
-       Bronze Delta Tables
-       Raw pageview records
-              |
-              v
-       Silver Delta Tables
-   Cleaned and categorized data
-              |
-              v
-        Gold Delta Tables
- Dashboard-ready aggregations
-              |
-              v
-     Databricks SQL Dashboard
-```
+```mermaid
+flowchart TD
+    A[Wikimedia Hourly Pageview Files] --> B[Bronze Layer<br/>Raw pageview records]
+    B --> C[Silver Layer<br/>Cleaned and categorized data]
+    C --> D[Gold Layer<br/>Dashboard-ready aggregations]
+    D --> E[Databricks SQL Dashboard]
+
+    classDef source fill:#E8F0FE,stroke:#4A90E2,stroke-width:1.5px,color:#000;
+    classDef bronze fill:#F6E3B4,stroke:#C58B00,stroke-width:1.5px,color:#000;
+    classDef silver fill:#E5E7EB,stroke:#6B7280,stroke-width:1.5px,color:#000;
+    classDef gold fill:#FDE68A,stroke:#D97706,stroke-width:1.5px,color:#000;
+    classDef dashboard fill:#D1FAE5,stroke:#10B981,stroke-width:1.5px,color:#000;
+
+    class A source;
+    class B bronze;
+    class C silver;
+    class D gold;
+    class E dashboard;
 
 ## Technology Stack
 
