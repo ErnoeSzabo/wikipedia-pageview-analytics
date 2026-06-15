@@ -111,23 +111,15 @@ ORDER BY
 -- Displays the first and last timestamps in the rolling window.
 -- ------------------------------------------------------------
 
-WITH bounds AS (
-    SELECT
-        MIN(view_timestamp) AS start_ts,
-        MAX(view_timestamp) + INTERVAL 1 HOUR AS end_ts,
-        COUNT(DISTINCT view_timestamp) AS loaded_hours
-    FROM workspace.wiki_gold.topic_pageviews
-)
-
 SELECT
-    CONCAT(
-        'Current data window: ',
-        DATE_FORMAT(start_ts, 'yyyy-MM-dd HH:mm'),
-        ' UTC – ',
-        DATE_FORMAT(end_ts, 'yyyy-MM-dd HH:mm'),
-        ' UTC | ',
-        loaded_hours,
-        ' hourly slots'
-    ) AS current_data_window
-FROM bounds;
+    COUNT(DISTINCT view_timestamp) AS hourly_slots,
+    DATE_FORMAT(
+        MIN(view_timestamp),
+        'MMM d, HH:mm'
+    ) AS window_start_utc,
+    DATE_FORMAT(
+        MAX(view_timestamp),
+        'MMM d, HH:mm'
+    ) AS latest_data_utc
+FROM workspace.wiki_gold.topic_pageviews;
 
