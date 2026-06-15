@@ -101,16 +101,18 @@ Each processing step starts only after the previous task has completed successfu
 
 ## Dashboard
 
-The Databricks SQL dashboard includes:
+The Databricks SQL dashboard provides a continuously updated view of public attention across six selected global topics.
 
-* Topic ranking by total pageviews
-* Mobile versus desktop pageviews
-* Pageviews by topic and hour
-* Top pages for a selected topic
-* Interactive topic selection
-* Current pipeline data window
+It includes topic rankings, desktop and mobile comparisons, hourly attention trends, and an interactive selector for exploring the most viewed Wikipedia pages within each topic.
 
-Dashboard screenshots will be added to this repository.
+### Topic Overview
+
+![Global Attention Analytics topic overview](screenshots/dashboard_01.png)
+
+### Hourly Trends and Top Pages
+
+![Hourly Wikipedia topic trends and selected top pages](screenshots/dashboard_02.png)
+
 
 ## Repository Structure
 
