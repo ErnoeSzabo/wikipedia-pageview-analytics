@@ -139,24 +139,24 @@ It includes topic rankings, desktop and mobile comparisons, hourly attention tre
 wikipedia-pageview-analytics/
 │
 ├── README.md
+│
 ├── notebooks/
-│   ├── 01_bronze_ingestion.py
-│   ├── 02_silver_transformation.py
-│   └── 03_gold_analytics.py
+│   ├── 01_wikipedia_pageviews_bronze_raw_table.ipynb
+│   ├── 02_wikipedia_pageviews_silver_cleaning.ipynb
+│   └── 03_wikipedia_pageviews_gold_topic_analytics.ipynb
 │
 ├── sql/
 │   └── dashboard_queries.sql
 │
-├── images/
-│   ├── dashboard_overview.png
-│   ├── databricks_workflow.png
-│   └── architecture.png
-│
-├── docs/
-│   └── data_dictionary.md
+├── screenshots/
+│   ├── dashboard_01.png
+│   ├── dashboard_02.png
+│   ├── pipeline.png
+│   └── pipeline_tasks.png
 │
 └── .gitignore
 ```
+
 
 ## Data Source
 
