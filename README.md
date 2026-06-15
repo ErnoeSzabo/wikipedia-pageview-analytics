@@ -43,7 +43,11 @@ flowchart TD
     class B bronze;
     class C silver;
     class D gold;
-    class E dashboard
+    class E dashboard;
+```
+
+## Technology Stack
+
 
 ## Technology Stack
 
