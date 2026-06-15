@@ -139,40 +139,6 @@ wikipedia-pageview-analytics/
 │
 └── .gitignore
 ```
-## Repository Structure
-
-```mermaid
-flowchart TD
-    R[Wikipedia Pageview Analytics]
-
-    R --> README[README.md]
-    R --> N[notebooks]
-    R --> S[sql]
-    R --> I[images]
-    R --> D[docs]
-    R --> G[.gitignore]
-
-    N --> N1[01_bronze_ingestion.py]
-    N --> N2[02_silver_transformation.py]
-    N --> N3[03_gold_analytics.py]
-
-    S --> S1[dashboard_queries.sql]
-
-    I --> I1[dashboard_overview.png]
-    I --> I2[databricks_workflow.png]
-    I --> I3[architecture.png]
-
-    D --> D1[data_dictionary.md]
-
-    classDef root fill:#D1FAE5,stroke:#059669,stroke-width:2px,color:#000;
-    classDef folder fill:#E8F0FE,stroke:#4A90E2,stroke-width:1.5px,color:#000;
-    classDef file fill:#F8FAFC,stroke:#94A3B8,stroke-width:1px,color:#000;
-
-    class R root;
-    class N,S,I,D folder;
-    class README,G,N1,N2,N3,S1,I1,I2,I3,D1 file;
-```
-
 
 ## Data Source
 
