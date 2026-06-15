@@ -99,6 +99,25 @@ The job runs automatically every six hours.
 
 Each processing step starts only after the previous task has completed successfully.
 
+### Automated Databricks Workflow
+
+The pipeline is orchestrated as a three-task Databricks Workflow:
+
+1. **Bronze ingestion** downloads and structures the latest Wikimedia pageview files.
+2. **Silver cleaning** standardizes the records and removes technical or unsuitable pages.
+3. **Gold topic analytics** applies configurable topic rules and creates dashboard-ready Delta tables.
+
+Each task starts only after the previous task has completed successfully. The workflow runs on Databricks Serverless compute every six hours.
+
+![Databricks Bronze Silver Gold workflow](screenshots/pipeline_tasks.png)
+
+### Scheduled Pipeline Runs
+
+The automated workflow refreshes the rolling twelve-hour dataset every six hours. Recent optimized runs complete in approximately eight to nine minutes.
+
+![Databricks pipeline run history](screenshots/pipeline.png)
+
+
 ## Dashboard
 
 The Databricks SQL dashboard provides a continuously updated view of public attention across six selected global topics.
