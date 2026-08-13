@@ -1,6 +1,6 @@
 <h1>
   Global Attention Analytics
-  <img src="assets/databricks_logo.svg" width="40" alt="Databricks Logo">
+  <img src="assets/databricks_logo.svg" width="150" alt="Databricks Logo">
 </h1>
 
 ## Wikipedia Pageview Trends with Databricks
