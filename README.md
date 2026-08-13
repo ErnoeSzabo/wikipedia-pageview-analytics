@@ -1,9 +1,13 @@
-<h1>
-  Global Attention Analytics
-  <img src="assets/databricks_logo.svg" width="150" alt="Databricks Logo">
-</h1>
+<img src="assets/databricks_logo.svg"
+     alt="Databricks"
+     width="300"
+      align="left">
+<br>    
+<br>
+# Global Attention Analytics
 
 ## Wikipedia Pageview Trends with Databricks
+
 
 An automated data engineering and analytics project that processes hourly Wikimedia pageview data using Databricks, PySpark, Delta Lake, and Databricks Workflows.
 
