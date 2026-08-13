@@ -1,10 +1,11 @@
+
+# Global Attention Analytics
+<br>
 <img src="assets/databricks_logo.svg"
      alt="Databricks"
-     width="300"
+     width="200"
       align="left">
 <br>    
-<br>
-# Global Attention Analytics
 
 ## Wikipedia Pageview Trends with Databricks
 
